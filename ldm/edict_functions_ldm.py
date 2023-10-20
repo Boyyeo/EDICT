@@ -210,12 +210,10 @@ def init_attention_weights(weight_tuples):
     
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        if module_name == "CrossAttention" and "attn2" in name:
+        if module_name == "Attention" and "attn2" in name:
             module.last_attn_slice_weights = weights.to(device)
-            print("init attention _weight attn2")
-        if module_name == "CrossAttention" and "attn1" in name:
+        if module_name == "Attention" and "attn1" in name:
             module.last_attn_slice_weights = None
-            print("init attention _weight attn1")
 
 
 def init_attention_edit(tokens, tokens_edit):
@@ -235,15 +233,13 @@ def init_attention_edit(tokens, tokens_edit):
 
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        if module_name == "CrossAttention" and "attn2" in name:
+        if module_name == "Attention" and "attn2" in name:
             module.last_attn_slice_mask = mask.to(device)
             module.last_attn_slice_indices = indices.to(device)
-            print("init_attention_edit")
 
-        if module_name == "CrossAttention" and "attn1" in name:
+        if module_name == "Attention" and "attn1" in name:
             module.last_attn_slice_mask = None
             module.last_attn_slice_indices = None
-            print("init_attention_edit")
 
 
 def init_attention_func():
@@ -288,8 +284,7 @@ def init_attention_func():
 
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        if module_name == "CrossAttention":
-            print("new_attention")
+        if module_name == "Attention":
             module.last_attn_slice = None
             module.use_last_attn_slice = False
             module.use_last_attn_weights = False
@@ -299,41 +294,35 @@ def init_attention_func():
 def use_last_tokens_attention(use=True):
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        if module_name == "CrossAttention" and "attn2" in name:
+        if module_name == "Attention" and "attn2" in name:
             module.use_last_attn_slice = use
-            print("use_last_tokens_attention")
 
             
 def use_last_tokens_attention_weights(use=True):
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        print("module_name:",module_name)
-        if module_name == "CrossAttention" and "attn2" in name:
+        if module_name == "Attention" and "attn2" in name:
             module.use_last_attn_weights = use
-            print("use_last_tokens_attention_weights")
 
             
 def use_last_self_attention(use=True):
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        if module_name == "CrossAttention" and "attn1" in name:
+        if module_name == "Attention" and "attn1" in name:
             module.use_last_attn_slice = use
-            print("use_last_self_attention")
 
             
 def save_last_tokens_attention(save=True):
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        if module_name == "CrossAttention" and "attn2" in name:
+        if module_name == "Attention" and "attn2" in name:
             module.save_last_attn_slice = save
-            print("save_last_tokens_attention")
      
 def save_last_self_attention(save=True):
     for name, module in unet.named_modules():
         module_name = type(module).__name__
-        if module_name == "CrossAttention" and "attn1" in name:
+        if module_name == "Attention" and "attn1" in name:
             module.save_last_attn_slice = save
-            print("save_last_self_attention")
 
 ####################################
 
